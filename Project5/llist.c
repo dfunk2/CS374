@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
 
     //dont accept less than 1 argument
     if(argc < 2) {
-        printf("[Empty List]\n");
+        printf("[Empty List. Enter argument and an integer.\n");
         exit(1);
     }
 
@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
     }
 
     int j = 0; 
-    while(token[j] != NULL){
+    while(token[j] != NULL) {
         //ih condition
         if(strcmp(token[j], "ih") == 0){
             char *str = token[j+1];
@@ -119,10 +119,11 @@ int main(int argc, char *argv[]) {
         if(strcmp(token[j], "p") == 0){
             struct node *curr = head;
             if(curr == NULL){
-                printf("[Empty]\n");
+                printf("[empty]\n");
             } else {
                 llist_print(head);
             }
+            llist_print(head);
         }
         j++;
     }
