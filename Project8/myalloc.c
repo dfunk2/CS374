@@ -96,7 +96,6 @@ void myfree(void *p)
 
     //coalescing free memory
     struct block *curr = head;
-    //struct block *pt = head;
 
    while(curr->next != NULL){
         if(curr->in_use == 0 && curr->next->in_use == 0){
