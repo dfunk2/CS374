@@ -50,7 +50,7 @@ void new_process(int proc_num, int page_count)
 {  
     int page_table = -1; 
 
-    //iterate through free page map and update
+    //iterate through free page map for free slots and allocate slot for page table
     for(int j = 0; j < PAGE_COUNT; j++){
         int free_map_addr = get_address(0, j);
         if(mem[free_map_addr] == 0){
@@ -58,36 +58,39 @@ void new_process(int proc_num, int page_count)
             mem[free_map_addr] = 1;  
             break;
         }
-        //assign page table at index in free page map to page in physical memory
-        int ptp_addr = get_address(0, PTP_OFFSET + proc_num); 
-        mem[ptp_addr] = page_table; //save physical page of the page table in page 0
     }
-        if(page_table == -1){
-            printf("OOM: proc %d: page table\n", proc_num);
-            return;
-        }
+    if(page_table == -1){
+        printf("OOM: proc %d: page table\n", proc_num);
+        return;
+    }
+    //get virtual address in page 0 (in page table map) of page table pointer
+    int ptp_addr = get_address(0, PTP_OFFSET + proc_num); 
+    //assign page table to a physical address
+    mem[ptp_addr] = page_table; 
+        
+        //iterate through number of pages process requested and assign them to a slot in the page table
         int page_entry = -1;
         for(int i = 0; i < page_count; i++){ 
-            
+
+            //search for free pages again
             for(int k = 0; k < PAGE_COUNT; k++){
                 int addr = get_address(0, k); 
                 if(mem[addr] == 0){
                     page_entry = k;
                     mem[addr] = 1;
                     break;
-                }
-                
-            } if(page_entry == -1){
+                }   
+            } 
+            if(page_entry == -1){
                 printf("OOM: proc %d: data page\n", proc_num);
                 return;
             }
-
+            
             //store page entry in process page table
             int addr_page_entry = get_address(page_table, i);
-            mem[addr_page_entry] = page_entry;
-            
+            mem[addr_page_entry] = page_entry; 
 
-        }  
+        } 
 }
 
 //
