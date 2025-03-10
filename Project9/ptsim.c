@@ -63,10 +63,10 @@ void new_process(int proc_num, int page_count)
         printf("OOM: proc %d: page table\n", proc_num);
         return;
     }
-    //get virtual address in page 0 (in page table map) of page table pointer
-    int ptp_addr = get_address(0, PTP_OFFSET + proc_num); 
-    //assign page table to a physical address
-    mem[ptp_addr] = page_table; 
+        //get virtual address in page 0 (in page table map) of page table pointer
+        int ptp_addr = get_address(0, PTP_OFFSET + proc_num); 
+        //assign page table to a physical address
+        mem[ptp_addr] = page_table; 
         
         //iterate through number of pages process requested and assign them to a slot in the page table
         int page_entry = -1;
@@ -85,11 +85,11 @@ void new_process(int proc_num, int page_count)
                 printf("OOM: proc %d: data page\n", proc_num);
                 return;
             }
-            
-            //store page entry in process page table
-            int addr_page_entry = get_address(page_table, i);
-            mem[addr_page_entry] = page_entry; 
 
+                //get virtual address for page table entry inside page table
+                int addr_page_entry = get_address(page_table, i);
+                //assign page entry iteration into page table's physical address 
+                mem[addr_page_entry] = page_entry; 
         } 
 }
 
